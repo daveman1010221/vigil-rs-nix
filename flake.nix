@@ -10,17 +10,25 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        vigil = pkgs.callPackage ./package.nix {};
-        vigil-with-relay = pkgs.callPackage ./package.nix { buildLogRelay = true; };
-      in {
-        packages.default        = vigil;
-        packages.vigil          = vigil;
-        packages.vigil-with-relay = vigil-with-relay;
 
-        overlays.default = final: prev: {
-          vigild = vigil;
-          vigil  = vigil;
+        # vigild + vigil CLI (default — both binaries)
+        vigil-all = pkgs.callPackage ./package.nix {};
+
+        # vigild only — daemon for container images (smaller closure in Core layer)
+        vigild-only = pkgs.callPackage ./package.nix { bins = [ "vigild" ]; };
+
+        # vigil CLI only — for interactive use in Dev containers
+        vigil-cli = pkgs.callPackage ./package.nix { bins = [ "vigil" ]; };
+
+        # vigild + vigil + vigil-log-relay
+        vigil-with-relay = pkgs.callPackage ./package.nix {
+          bins = [ "vigild" "vigil" "vigil-log-relay" ];
         };
+      in {
+        packages.default        = vigil-all;
+        packages.vigild         = vigild-only;
+        packages.vigil          = vigil-cli;
+        packages.vigil-with-relay = vigil-with-relay;
       }
     );
 }

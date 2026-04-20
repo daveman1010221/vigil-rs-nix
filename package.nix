@@ -1,17 +1,17 @@
 # vigil-rs-nix/package.nix
 #
-# Builds vigild (daemon) and vigil (CLI) from the vigil-rs workspace.
-# vigil-log-relay is optional — pass buildLogRelay = true to include it.
+# Builds selected binaries from the vigil-rs workspace.
 #
-# vigil-rs is a PID 1 / container init daemon written in Rust.
-# https://github.com/git001/vigil-rs
+# Parameters:
+#   bins — list of binary names to build (default: vigild + vigil)
+#          valid values: "vigild", "vigil", "vigil-log-relay"
 
 { lib
 , rustPlatform
 , fetchFromGitHub
 , pkg-config
 , openssl
-, buildLogRelay ? false
+, bins ? [ "vigild" "vigil" ]
 }:
 
 rustPlatform.buildRustPackage {
@@ -30,12 +30,7 @@ rustPlatform.buildRustPackage {
   nativeBuildInputs = [ pkg-config ];
   buildInputs       = [ openssl ];
 
-  cargoBuildFlags = [
-    "--bin" "vigild"
-    "--bin" "vigil"
-  ] ++ lib.optionals buildLogRelay [
-    "--bin" "vigil-log-relay"
-  ];
+  cargoBuildFlags = lib.concatMap (bin: [ "--bin" bin ]) bins;
 
   doCheck = false;
 

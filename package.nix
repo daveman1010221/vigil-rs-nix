@@ -27,6 +27,12 @@ rustPlatform.buildRustPackage {
 
   cargoHash = "sha256-UpBd3CT1Y8UnFEhBVuuEiHXxz5HLulBc+v7RS0l8fcc=";
 
+  patches = [
+    # As PID 1 (or --reaper), vigild's reaper collected its own services' exits before they were waited for, and a
+    # service that exited 0 was reported failed (exit code 1). Carried until upstream (git001/vigil-rs) has a fix.
+    ./patches/reaper-keeps-exit-status.patch
+  ];
+
   nativeBuildInputs = [ pkg-config ];
   buildInputs       = [ openssl ];
 

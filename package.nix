@@ -16,22 +16,17 @@
 
 rustPlatform.buildRustPackage {
   pname   = "vigil-rs";
-  version = "3.2.1";
+  version = "3.2.2";
 
   src = fetchFromGitHub {
     owner = "git001";
     repo  = "vigil-rs";
-    rev   = "v3.2.1";
-    hash  = "sha256-q69YhOF9pUs/BBVZjXwM8tOXDRc7Gr3REecA51gAV3I=";
+    rev   = "v3.2.2";
+    hash  = "sha256-4xAtH5gaBeyqMUoBiWsV9wIe8Pq9474tjzKONruSI18=";
   };
 
-  cargoHash = "sha256-UpBd3CT1Y8UnFEhBVuuEiHXxz5HLulBc+v7RS0l8fcc=";
+  cargoHash = "sha256-p7pgqRVYJTWr8IvD2lJaclbAudLtxPX1kttHtqzgABk=";
 
-  patches = [
-    # As PID 1 (or --reaper), vigild's reaper collected its own services' exits before they were waited for, and a
-    # service that exited 0 was reported failed (exit code 1). Carried until upstream (git001/vigil-rs) has a fix.
-    ./patches/reaper-keeps-exit-status.patch
-  ];
 
   nativeBuildInputs = [ pkg-config ];
   buildInputs       = [ openssl ];

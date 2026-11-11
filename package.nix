@@ -16,16 +16,16 @@
 
 rustPlatform.buildRustPackage {
   pname   = "vigil-rs";
-  version = "3.2.2";
+  version = "4.0.1";
 
   src = fetchFromGitHub {
     owner = "git001";
     repo  = "vigil-rs";
-    rev   = "v3.2.2";
-    hash  = "sha256-4xAtH5gaBeyqMUoBiWsV9wIe8Pq9474tjzKONruSI18=";
+    rev   = "v4.0.1";
+    hash  = "sha256-O5cRB1e0/Oixm2/3/PllW4FKvyIgL68IKkEhd8UONbc=";
   };
 
-  cargoHash = "sha256-p7pgqRVYJTWr8IvD2lJaclbAudLtxPX1kttHtqzgABk=";
+  cargoHash = "sha256-/Bqg6d9g1Kx5w9svmSGSULH8IzLtSEw8E/6FRVy6OAU=";
 
 
   nativeBuildInputs = [ pkg-config ];
